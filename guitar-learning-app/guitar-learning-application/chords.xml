@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<chord>
-    <type>MAJOR</type>
-    <name>D</name>
-    <noteList>
-        <name>D</name>
-        <position>3</position>
-    </noteList>
-    <noteList>
-        <name>F#</name>
-        <position>7</position>
-    </noteList>
-    <noteList>
-        <name>A</name>
-        <position>10</position>
-    </noteList>
-</chord>
+<Chords>
+    <Chord>
+        <Name>C</Name>
+        <Type>Major</Type>
+    </Chord>
+</Chords>
