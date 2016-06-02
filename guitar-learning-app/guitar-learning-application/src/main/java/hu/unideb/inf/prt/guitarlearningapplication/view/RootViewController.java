@@ -4,7 +4,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
+/**
+ * Controller class for the RootView.fxml.
+ * 
+ * @author Dávid
+ */
 public class RootViewController {
+	
 	/**
      * Closes the application.
      */
@@ -22,7 +28,6 @@ public class RootViewController {
         alert.setTitle("GuitarLearningApp");
         alert.setHeaderText("About");
         alert.setContentText("Author: Dávid Kistamás");
-
         alert.showAndWait();
     }
 }
