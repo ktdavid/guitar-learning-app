@@ -1,4 +1,4 @@
-package hu.unideb.inf.prt.guitarlearningapplication;
+﻿package hu.unideb.inf.prt.guitarlearningapplication;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -192,7 +192,7 @@ public class Main extends Application {
 		FXMLLoader loader = new FXMLLoader();
 
 		try {
-			loader.setLocation(getClass().getResource("view/RootView.fxml"));
+			loader.setLocation(Main.class.getResource("view/RootView.fxml"));
 			this.primaryStage.setTitle("Guitar Learning Application");
 			rootView = (BorderPane) loader.load();
 
