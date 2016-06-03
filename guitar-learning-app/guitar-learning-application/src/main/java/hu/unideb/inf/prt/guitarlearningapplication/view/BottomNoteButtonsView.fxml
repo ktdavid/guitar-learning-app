@@ -51,11 +51,6 @@
 					mnemonicParsing="false" onAction="#createMyChordButtonAction" text="Make My Chord!"
 					textAlignment="CENTER" AnchorPane.bottomAnchor="6.0"
 					AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="5.0" />
-				<Button fx:id="btnLoadChord" layoutX="10.0" layoutY="10.0"
-					minWidth="100.0" mnemonicParsing="false" onAction="#loadChordsButtonAction"
-					text="Load Chord" textAlignment="CENTER" AnchorPane.bottomAnchor="5.0"
-					AnchorPane.leftAnchor="160.0" AnchorPane.rightAnchor="638.0"
-					AnchorPane.topAnchor="5.0" />
 			</children>
 		</AnchorPane>
 		<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="80.0"

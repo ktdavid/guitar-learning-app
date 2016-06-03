@@ -8,11 +8,11 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import hu.unideb.inf.prt.guitarlearningapplication.controller.IOController;
 import hu.unideb.inf.prt.guitarlearningapplication.model.Chord;
 import hu.unideb.inf.prt.guitarlearningapplication.model.Chords;
 import hu.unideb.inf.prt.guitarlearningapplication.model.Note;
@@ -75,32 +75,67 @@ public class Main extends Application {
 	 */
 	private List<Note> baseNoteList = new ArrayList<>();
 
+	/**
+	 * The list of the chords to be saved.
+	 */
 	private Chords chordList = new Chords();
 
 	/**
-	 * Public getter for the {@code Chords} wrapper {@code class}.
+	 * Returns {@code Chord} objects wrapped in a {@code Chords} object.
 	 * 
-	 * @return {@code Chords} the wrapped {@code Chord} objects from the saved {@code xml} file.
+	 * @return the wrapped {@code Chord} objects from the saved xml file.
 	 */
 	public Chords getWrapperChordList() {
 		return chordList;
 	}
 
+	/**
+	 * The {@code ObservableList<Chord>} containing the chords that need to be displayed in the {@code TableView}.
+	 */
 	private ObservableList<Chord> chordsForTableView = FXCollections.observableArrayList();
 
 	/**
-	 * public getter for observablelist Chords.
-	 * @return {@code ObservableList<Chord>}
+	 * Returns {@code Chord} objects in an ObservableList.
+	 * 
+	 * @return the Chord objects in an ObservableList
 	 */
 	public ObservableList<Chord> getChordsForTableView() {
 		return chordsForTableView;
 	}
+	
+	/**
+	 * The debug switch for debugging XML I/O in controller.
+	 * It's value is false by default.
+	 */
+	private boolean debugSwitchEnabled = false;
+	
+	/**
+	 * Returns a boolean value whether it is true or false.
+	 * 
+	 * @return the value of the debug switch
+	 */
+	public boolean isDebugSwitchEnabled() {
+		return debugSwitchEnabled;
+	}
 
 	/**
-	 * The constructor of the class.
+	 * Sets the debug switch's value.
+	 *
+	 * @param debugSwitchEnabled the debug switch's value
+	 */
+	public void setDebugSwitch(boolean debugSwitchEnabled) {
+		this.debugSwitchEnabled = debugSwitchEnabled;
+	}
+	
+//	/**
+//	 * The object for the {@code IOController} class.
+//	 */
+//	private IOController IOController;
+
+	/**
+	 * Initializes baseNoteList with sample notes for the application.
 	 */
 	public Main() {
-		// add the base notes to a list
 		baseNoteList.add(new Note(1, "C"));
 		baseNoteList.add(new Note(2, "C#"));
 		baseNoteList.add(new Note(3, "D"));
@@ -130,8 +165,7 @@ public class Main extends Application {
 	/**
 	 * Returns the main stage.
 	 * 
-	 * @return
-	 * 			The main stage.
+	 * @return the main stage
 	 */
 	public Stage getPrimaryStage() {
 		return primaryStage;
@@ -140,7 +174,7 @@ public class Main extends Application {
 	/**
 	 * Returns the base notes list.
 	 * 
-	 * @return {@code List<Note>} the base notes list
+	 * @return the base notes list
 	 */
 	public List<Note> getBaseNoteList() {
 		return baseNoteList;
@@ -149,8 +183,7 @@ public class Main extends Application {
 	/**
 	 * Method for launching the application.
 	 * 
-	 * @param args
-	 *            the command-line arguments
+	 * @param args the command-line arguments, no need of them
 	 */
 	public static void main(String[] args) {
 		launch(args);
@@ -159,10 +192,19 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		this.primaryStage = primaryStage;
+//		initializeControllers();
 		createRootView();
 		createGuitarNeckView(null, 0, 0);
 		createBottomNoteButtonsView(null, null);
 	}
+
+//	/**
+//	 * Initializes the {@code Controller} classes with main application.
+//	 */
+//	private void initializeControllers() {
+//		IOController = new IOController();
+//		IOController.setMainApp(this);
+//	}
 
 	/**
 	 * Creates the root view of the application.
@@ -202,11 +244,11 @@ public class Main extends Application {
 	}
 
 	/**
-	 * Creates the guitar neck's view in the middle of the root view.
+	 * Creates the guitar neck view in the middle of the root view.
 	 * 
-	 * @param readyChord the chord that is ready to showed
-	 * @param lowerFretTreshold the lower fret's number
-	 * @param upperFretTreshold the upper fret's number
+	 * @param readyChord the chord that is ready to be showed
+	 * @param lowerFretTreshold the lower fret's number showing the notes from
+	 * @param upperFretTreshold the upper fret's number showing the notes to
 	 */
 	public void createGuitarNeckView(Chord readyChord, int lowerFretTreshold, int upperFretTreshold) {
 		FXMLLoader loader = new FXMLLoader();
@@ -236,10 +278,10 @@ public class Main extends Application {
 	}
 
 	/**
-	 * Creates the guitar neck's view at the bottom of the root view.
+	 * Creates the bottom section view at the bottom of the root view.
 	 * 
-	 * @param selectedNoteName the selected Chord's base Note's name
-	 * @param selectedChordType the selected Chord's type
+	 * @param selectedNoteName the selected {@code Chord}'s base note name
+	 * @param selectedChordType the selected {@code Chord}'s type
 	 */
 	public void createBottomNoteButtonsView(String selectedNoteName, String selectedChordType) {
 		FXMLLoader loader = new FXMLLoader();
@@ -272,75 +314,34 @@ public class Main extends Application {
 	}
 
 	/**
-	 * creates the saved chords view as a tableview.
+	 * Creates the saved chords view as a {@code TableView}.
 	 * 
-	 * @throws IOException ecxeption when cant find files
+	 * @throws IOException the exception when application can't find the file specified
 	 */
-	public void createSavedChordsView() throws IOException {
+	public void createSavedChordsView() {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("view/SavedChordsView.fxml"));
-
-		AnchorPane savedChordsView = (AnchorPane) loader.load();
-
-		rootView.setCenter(savedChordsView);
-
-		clearBottom();
-
-		SavedChordsViewController controller = loader.getController();
-		controller.setMain(this);
-
-		logger.info("init - SavedChords View has been created.");
-	}
-
-	/**
-	 * Loads chords from the specified file.
-	 * 
-	 * @param file the file
-	 */
-	public void loadChordsFromFile(File file) {
+		
 		try {
-			JAXBContext context = JAXBContext.newInstance(Chords.class);
-			Unmarshaller um = context.createUnmarshaller();
-			Chords wrapper = (Chords) um.unmarshal(file);
-			chordsForTableView.clear();
-			chordsForTableView = FXCollections.observableArrayList(wrapper.getChords());
+			AnchorPane savedChordsView = (AnchorPane) loader.load();
+	
+			rootView.setCenter(savedChordsView);
+	
+			clearBottom();
+	
+			SavedChordsViewController controller = loader.getController();
+			controller.setMainApp(this);
+	
+			logger.info("init - SavedChords View has been created.");
 			
-			Marshaller marshaller = context.createMarshaller();
-	        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-	        marshaller.marshal(wrapper, System.out);
-
-		} catch (JAXBException | IllegalArgumentException e) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText("Could not load data!");
-			alert.setContentText("Could not load data from file:\n" + file.getPath());
-			alert.showAndWait();
+		} catch (IOException e) {
+			logger.error(e.getMessage() + " - " + e.getStackTrace());
 		}
 	}
 
 	/**
-	 * Saves the chords to the specified file.
-	 * 
-	 * @param file the file
-	 * @param chords the chords
+	 * This method is for setting the width of the right section of the {@code GridPane} to zero. 
 	 */
-	public void saveChordToFile(File file, Chords chords) {
-		try {
-			JAXBContext context = JAXBContext.newInstance(Chords.class);
-			Marshaller m = context.createMarshaller();
-			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			m.marshal(chords, System.out);
-			m.marshal(chords, file);
-			
-		} catch (JAXBException | IllegalArgumentException e) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText("Could not save data!");
-			alert.setContentText("Could not save data to file:\n" + file.getPath());
-			alert.showAndWait();
-		}
-	}
-
 	private void clearRight() {
 		HBox hbox = new HBox();
 
@@ -352,6 +353,9 @@ public class Main extends Application {
 		rootView.setRight(hbox);
 	}
 
+	/**
+	 * This method is for setting the width of the left section of the {@code GridPane} to zero.
+	 */
 	private void clearLeft() {
 		HBox hbox = new HBox();
 
@@ -363,6 +367,9 @@ public class Main extends Application {
 		rootView.setLeft(hbox);
 	}
 
+	/**
+	 * This method is for setting the height of the bottom section of the {@code GridPane} to zero.
+	 */
 	private void clearBottom() {
 		VBox vbox = new VBox();
 

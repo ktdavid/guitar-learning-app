@@ -9,14 +9,22 @@ import javafx.beans.property.StringProperty;
  * Model class for a Note object.
  * 
  * @author Dávid Kistamás
+ * @version 1.0
  */
 public class Note {
 
+	/**
+	 * The name of the {@code Note} object.
+	 */
 	private StringProperty name;
+	
+	/**
+	 * The position of the {@code Note} object.
+	 */
 	private IntegerProperty position;
 	
 	/**
-	 * Constructor without parameters.
+	 * Constructs an empty {@code Note} object.
 	 */
 	public Note() {
 		name = new SimpleStringProperty();
@@ -24,10 +32,10 @@ public class Note {
 	}
 
 	/**
-	 * Constructor with parameters.
+	 * Constructs a {@code Note} object with the specified parameters.
 	 * 
-	 * @param position the position
-	 * @param name the name
+	 * @param position the position of the {@code Note} object
+	 * @param name the name of the {@code Note} object
 	 */
 	public Note(int position, String name) {
 		super();
@@ -36,54 +44,54 @@ public class Note {
 	}
 
 	/**
-	 * public getter for name
+	 * Returns the name of the {@code Note} object as a String.
 	 * 
-	 * @return String
+	 * @return the name of the {@code Note} object as a String
 	 */
 	public String getName() {
 		return name.get();
 	}
 
 	/**
-	 * public setter for name
-	 * 
-	 * @param name the name
+	 * Sets the name of the {@code Note} object.
+	 *
+	 * @param name the name to be set to the {@code Note} object
 	 */
 	public void setName(String name) {
 		this.name.set(name);
 	}
 	
 	/**
-	 * public property for the name of the Note
+	 * Returns the name property of the {@code Note} object.
 	 * 
-	 * @return StringProperty
+	 * @return the name property of the {@code Note} object
 	 */
 	public StringProperty nameProperty() {
 		return name;
 	}
 
 	/**
-	 * public getter for position
+	 * Returns the position of the {@code Note} object as an int.
 	 * 
-	 * @return int
+	 * @return the position of the {@code Note} object as an int
 	 */
 	public int getPosition() {
 		return position.get();
 	}
 	
 	/**
-	 * public setter for position
-	 * 
-	 * @param position the position
+	 * Sets the position of the {@code Note} object.
+	 *
+	 * @param position the position to be set to the {@code Note} object
 	 */
 	public void setPosition(int position) {
 		this.position.set(position);
 	}
 	
 	/**
-	 * public property for the position of the Note
+	 * Returns the position property of the {@code Note} object.
 	 * 
-	 * @return IntegerProperty
+	 * @return the position property of the {@code Note} object
 	 */
 	public IntegerProperty positionProperty() {
 		return position;

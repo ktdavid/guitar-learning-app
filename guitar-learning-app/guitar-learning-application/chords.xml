@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Chords>
     <Chord>
-        <Name>C</Name>
+        <Name>E</Name>
+        <Type>Minor</Type>
+    </Chord>
+    <Chord>
+        <Name>F</Name>
         <Type>Major</Type>
+    </Chord>
+    <Chord>
+        <Name>D</Name>
+        <Type>Major</Type>
+    </Chord>
+    <Chord>
+        <Name>A</Name>
+        <Type>Augmented</Type>
+    </Chord>
+    <Chord>
+        <Name>B</Name>
+        <Type>Diminished</Type>
     </Chord>
 </Chords>

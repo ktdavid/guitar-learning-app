@@ -3,21 +3,25 @@ package hu.unideb.inf.prt.guitarlearningapplication.view;
 import java.io.IOException;
 
 import hu.unideb.inf.prt.guitarlearningapplication.Main;
+import hu.unideb.inf.prt.guitarlearningapplication.helper.Helper;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 /**
  * Controller class for the Menus.fxml view.
  * 
- * @author Dávid
+ * @author Dávid Kistamás
+ * @version 1.0
  */
 public class MenusController {
 	
+	/**
+	 * A reference to the main application.
+	 */
 	private Main main;
 	
 	/**
-	 * Is called by the main application to give a reference back to itself.
+	 * It is called by the main application to give a reference back to itself.
 	 * 
 	 * @param main the main application
 	 */
@@ -25,6 +29,9 @@ public class MenusController {
 		this.main = main;
 	}
 	
+	/**
+	 * Switches to the guitar chord builder screen.
+	 */
 	@FXML
 	private void switchToBuilderScreen() {
 		main.createRootView();
@@ -32,8 +39,12 @@ public class MenusController {
 		main.createBottomNoteButtonsView(null, null);
 	}
 	
+	/**
+	 * Switches to the saved {@code Chords} page.
+	 * @throws IOException
+	 */
 	@FXML
-	private void switchToLoaderScreen() throws IOException {
+	private void switchToLoaderScreen() {
 		main.createRootView();
 		main.createSavedChordsView();
 	}
@@ -47,14 +58,10 @@ public class MenusController {
     }
     
     /**
-     * Opens an about dialog.
+     * Opens the about dialog.
      */
     @FXML
     private void handleAbout() {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("GuitarLearningApp");
-        alert.setHeaderText("About");
-        alert.setContentText("Author: Dávid Kistamás");
-        alert.showAndWait();
+    	Helper.createAlert("GuitarLearningApp", "About\n\nAuthor: Dávid Kistamás", AlertType.INFORMATION);
     }
 }

@@ -1,10 +1,14 @@
 package hu.unideb.inf.prt.guitarlearningapplication.view;
 
+import java.io.File;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import hu.unideb.inf.prt.guitarlearningapplication.Main;
+import hu.unideb.inf.prt.guitarlearningapplication.controller.IOController;
 import hu.unideb.inf.prt.guitarlearningapplication.model.Chord;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -14,31 +18,54 @@ import javafx.scene.input.MouseEvent;
 /**
  * Controller class for the SavedChordsView.fxml.
  * 
- * @author Dávid
+ * @author Dávid Kistamás
+ * @version 1.0
  */
 public class SavedChordsViewController {
 
 	/**
-	 * A logger object used for logging.
+	 * A logger object used for logging events at runtime.
 	 */
 	private Logger logger = LoggerFactory.getLogger(SavedChordsViewController.class);
 
+	/**
+	 * An instance of the {@code IOController} class.
+	 */
+	private IOController IOController = new IOController();
+	
+	/**
+	 * The {@code TableView} for the {@code Chords} to display.
+	 */
 	@FXML
 	private TableView<Chord> chordTable;
-
+	
+	/**
+	 * The {@code TableColumn} for the {@code Chord} name to display.
+	 */
 	@FXML
 	private TableColumn<Chord, String> baseNoteColumn;
+	
+	/**
+	 * The {@code TableColumn} for the {@code Chord} type to display.
+	 */
 	@FXML
 	private TableColumn<Chord, String> chordTypeColumn;
 
+	/**
+	 * A reference to the main application.
+	 */
 	private Main main;
 
 	/**
-	 * Constructor without parameters.
+	 * Constructs an empty {@code SavedChordsViewController} object.
 	 */
 	public SavedChordsViewController() {
 	}
 
+	/**
+	 * Initializes the {@code SavedChordsViewController} class. This method is automatically called
+	 * after the {@code FXML} file has been loaded.
+	 */
 	@FXML
 	private void initialize() {
 
@@ -58,21 +85,40 @@ public class SavedChordsViewController {
 					
 					main.createBottomNoteButtonsView(chordTable.getSelectionModel().getSelectedItem().getName(), 
 							chordTable.getSelectionModel().getSelectedItem().getChordType().toString());
-
-					//main.createGuitarNeckView(new Chord(), 1, 3);
 				}
 			}
 		});
 	}
 
 	/**
-	 * public setter for main application.
+	 * It is called by the main application to give a reference back to itself.
+	 * Also sets the chords of the {@code TableView} from the {@code ObservableList}
+	 * from the main application.
 	 * 
 	 * @param main the main application
 	 */
-	public void setMain(Main main) {
+	public void setMainApp(Main main) {
 		this.main = main;
 
 		chordTable.setItems(main.getChordsForTableView());
+		
+		initializeControllers();
+	}
+
+	/**
+	 * 
+	 */
+	private void initializeControllers() {
+//		
+//		/**
+//		 * The load loading button's action.
+//		 * 
+//		 * @param event the actionevent
+//		 */
+//		@FXML
+//		public void loadChordsButtonAction(ActionEvent event) {
+		IOController.setMainApp(main);
+		IOController.loadChordsFromFile(new File("chords.xml"));
+		//}
 	}
 }

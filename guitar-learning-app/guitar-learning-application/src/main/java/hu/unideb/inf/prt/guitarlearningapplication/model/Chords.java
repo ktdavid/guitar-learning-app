@@ -9,22 +9,27 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Public wrapper class for the Chord objects.
  * 
- * @author Dávid
+ * @author Dávid Kistamás
+ * @version 1.0
  */
 @XmlRootElement(name = "Chords")
 public class Chords{
 	
+	/**
+	 * A wrapper list for {@code Chord} objects.
+	 */
 	private List<Chord> chords;
 	
 	/**
-	 * Constructor without parameters.
+	 * Constructs an empty {@code Chords} object.
 	 */
 	public Chords() {
 	}
 	
 	/**
-	 * public getter for chords.
-	 * @return {@code List<Chord>}
+	 * Returns the chords of the {@code Chords} object.
+	 * 
+	 * @return the chords of the {@code Chords} object
 	 */
 	@XmlElement(name="Chord")
 	public List<Chord> getChords() {
@@ -32,16 +37,20 @@ public class Chords{
 	}
 	
 	/**
-	 * public setter for chords.
-	 * @param chords the chords
+	 * Sets the chords of the {@code Chords} object.
+	 *
+	 * @param chords the chords to be set to the {@code Chords} object
 	 */
 	public void setChords(List<Chord> chords) {
 		this.chords = chords;
 	}
 	
 	/**
-	 * public method for adding a Chord to the list of Chords.
-	 * @param chord the chord
+	 * Adds a new {@code Chord} object to the list of {@code Chord} objects.
+	 * If the list hasn't been initialized yet, this method initializes it first,
+	 * then adds the {@code Chord} object to the list.
+	 * 
+	 * @param chord the chord to be added to the list of {@code Chord} objects
 	 */
 	public void add(Chord chord) {
 		if(chords == null) {

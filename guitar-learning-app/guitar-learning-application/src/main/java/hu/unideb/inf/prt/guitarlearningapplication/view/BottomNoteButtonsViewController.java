@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import hu.unideb.inf.prt.guitarlearningapplication.Main;
+import hu.unideb.inf.prt.guitarlearningapplication.controller.IOController;
 import hu.unideb.inf.prt.guitarlearningapplication.helper.Helper;
 import hu.unideb.inf.prt.guitarlearningapplication.model.Chord;
 import hu.unideb.inf.prt.guitarlearningapplication.model.ChordType;
@@ -16,6 +17,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
@@ -24,7 +26,8 @@ import javafx.scene.control.ToggleGroup;
 /**
  * Controller class for the businesslogic of the application.
  * 
- * @author Dávid
+ * @author Dávid Kistamás
+ * @version 1.0
  */
 public class BottomNoteButtonsViewController {
 
@@ -32,9 +35,14 @@ public class BottomNoteButtonsViewController {
 	 * Reference to the main application.
 	 */
 	private Main main;
+	
+	/**
+	 * An instance of the {@code IOController} class.
+	 */
+	private IOController IOController = new IOController();
 
 	/**
-	 * A logger object used for logging.
+	 * A logger object used for logging events at runtime.
 	 */
 	private Logger logger = LoggerFactory.getLogger(BottomNoteButtonsViewController.class);
 
@@ -59,65 +67,97 @@ public class BottomNoteButtonsViewController {
 	@FXML
 	private TextField tbUpperFretTreshold;
 
+	/**
+	 * The selected {@code Note} name. 
+	 * It is the base note's name of the {@code Chord} that will be created.
+	 */
 	private String selectedNoteName;
 
 	/**
-	 * public getter for the note name.
+	 * Returns the name of the selected {@code Note} object from the {@code BottomNoteButtonsViewController} class.
 	 * 
-	 * @return String
+	 * @return the name of the selected {@code Note} object
 	 */
 	public String getSelectedNoteName() {
 		return selectedNoteName;
 	}
 
 	/**
-	 * public setter for the note name.
-	 * 
-	 * @param selectedNoteName the selected note name
+	 * Sets the name of the selected {@code Note} object in the {@code BottomNoteButtonsViewController} class.
+	 *
+	 * @param selectedNoteName the name to be set to the selected {@code Note} object
 	 */
 	public void setSelectedNoteName(String selectedNoteName) {
 		this.selectedNoteName = selectedNoteName;
 	}
 
+	/**
+	 * The selected {@code Chord} object's type.
+	 */
 	private String selectedChordType;
 
 	/**
-	 * public getter for chord type.
+	 * Returns the type of the selected {@code Chord} object from the {@code BottomNoteButtonsViewController} class.
 	 * 
-	 * @return String
+	 * @return the type of the selected {@code Chord} object
 	 */
 	public String getSelectedChordType() {
 		return selectedChordType;
 	}
 
 	/**
-	 * public setter for chord type.
-	 * 
-	 * @param selectedChordType the selected chord type
+	 * Sets the type of the selected {@code Chord} object in the {@code BottomNoteButtonsViewController} class.
+	 *
+	 * @param selectedChordType the type to be set to the selected {@code Chord} object
 	 */
 	public void setSelectedChordType(String selectedChordType) {
 		this.selectedChordType = selectedChordType;
 	}
 
-	private int smallSecund = 3;
-	private int bigSecund = 4;
+	/**
+	 * The small interval for creating a {@code Chord} object.
+	 */
+	private int smallInterval = 3;
+	
+	/**
+	 * The big interval for creating a {@code Chord} object.
+	 */
+	private int bigInterval = 4;
 
+	/**
+	 * The lower fret number to show the {@code Chord} objects from.
+	 */
 	private int lowerFretTreshold = 1;
+	
+	/**
+	 * The upper fret number to show the {@code Chord} objects to.
+	 */
 	private int upperFretTreshold = 3;
 
+	/**
+	 * The chord that is set to the {@code Chord} object that is ready to be displayed.
+	 */
 	private Chord readyChord;
 	
 	/**
-	 * public getter for the readyChord object.
+	 * Returns the display-ready {@code Chord} object from the {@code BottomNoteButtonsViewController} class.
 	 * 
-	 * @return Chord
+	 * @return the display-ready {@code Chord} object
 	 */
 	public Chord getReadyChord() {
 		return readyChord;
 	}
+	
+	/**
+	 * Constructs an empty {@code BottomNoteButtonsViewController} object,
+	 * and initializes the IOController for reading and writing {@code Chord} objects to file.
+	 */
+	public BottomNoteButtonsViewController() {
+	}
 
 	/**
-	 * method for post initializing the view when chord is loaded from tableview.
+	 * Initializes the {@code BottomNoteButtonsViewController} view when 
+	 * {@code Chord} object is loaded from {@code TableView}.
 	 */
 	public void postInitialize() {
 		Notes.getToggles().forEach(rb -> {
@@ -150,10 +190,10 @@ public class BottomNoteButtonsViewController {
 				}
 				createChord(selectedNoteName, selectedChordType, lowerFretTreshold, upperFretTreshold);
 			} else {
-				Helper.createErrorAlert("Not proper use!", "Please select a chord type!");
+				Helper.createAlert("Not proper use!", "Please select a chord type!", AlertType.ERROR);
 			}
 		} else {
-			Helper.createErrorAlert("Not proper use!", "Please select a note!");
+			Helper.createAlert("Not proper use!", "Please select a note!", AlertType.ERROR);
 		}
 	}
 
@@ -164,38 +204,30 @@ public class BottomNoteButtonsViewController {
 	 */
 	@FXML
 	public void saveChordButtonAction(ActionEvent event) {
+		IOController.setMainApp(main);
+		
 		if (selectedNoteName != null) {
 			if (selectedChordType != null) {
 				if (main.getWrapperChordList() != null && main.getWrapperChordList().getChords() != null
 						&& !main.getWrapperChordList().getChords().stream().anyMatch(c -> c.getName().equals(readyChord.getName())
 								&& c.getChordType().equals(readyChord.getChordType()))) {
 					main.getWrapperChordList().add(readyChord);
-					main.saveChordToFile(new File("chords.xml"), main.getWrapperChordList());
+					IOController.saveChordToFile(new File("chords.xml"), main.getWrapperChordList());
 					logger.info("File has been saved successfully!");
 				} else if (main.getWrapperChordList() == null || main.getWrapperChordList().getChords() == null) {
 					main.getWrapperChordList().add(readyChord);
-					main.saveChordToFile(new File("chords.xml"), main.getWrapperChordList());
+					IOController.saveChordToFile(new File("chords.xml"), main.getWrapperChordList());
 					logger.info("File has been saved successfully!");
 				} else {
-					Helper.createErrorAlert("Chord is saved before.",
-							readyChord.getName() + " " + readyChord.getChordType() + " chord has been already saved before.");
+					Helper.createAlert("Chord is saved before.",
+							readyChord.getName() + " " + readyChord.getChordType() + " chord has been already saved before.", AlertType.ERROR);
 				}
 			} else {
-				Helper.createErrorAlert("Not proper use!", "Nothing to save, please select a chord type!");
+				Helper.createAlert("Not proper use!", "Nothing to save, please select a chord type!", AlertType.ERROR);
 			}
 		} else {
-			Helper.createErrorAlert("Not proper use!", "Nothing to save, please select a note!");
+			Helper.createAlert("Not proper use!", "Nothing to save, please select a note!", AlertType.ERROR);
 		}
-	}
-	
-	/**
-	 * The Chord loading button's action.
-	 * 
-	 * @param event the actionevent
-	 */
-	@FXML
-	public void loadChordsButtonAction(ActionEvent event) {
-		main.loadChordsFromFile(new File("chords.xml"));
 	}
 
 	private Chord createChord(String selectedNoteName, String selectedChordType, int lowerFretTreshold,
@@ -205,26 +237,26 @@ public class BottomNoteButtonsViewController {
 		switch (selectedChordType) {
 		case "MAJOR":
 			readyChord = new Chord(selectedNoteName, ChordType.valueOf(selectedChordType),
-					createNoteList(noteList, selectedNoteName, bigSecund, smallSecund));
+					createNoteList(noteList, selectedNoteName, bigInterval, smallInterval));
 			readyChord.getNotes().stream().forEach(n -> logger.info(n.getName() + " " + n.getPosition()));
 			break;
 		case "MINOR":
 			readyChord = new Chord(selectedNoteName, ChordType.valueOf(selectedChordType),
-					createNoteList(noteList, selectedNoteName, smallSecund, bigSecund));
+					createNoteList(noteList, selectedNoteName, smallInterval, bigInterval));
 			readyChord.getNotes().stream().forEach(n -> logger.info(n.getName() + " " + n.getPosition()));
 			break;
 		case "AUGMENTED":
 			readyChord = new Chord(selectedNoteName, ChordType.valueOf(selectedChordType),
-					createNoteList(noteList, selectedNoteName, bigSecund, bigSecund));
+					createNoteList(noteList, selectedNoteName, bigInterval, bigInterval));
 			readyChord.getNotes().stream().forEach(n -> logger.info(n.getName() + " " + n.getPosition()));
 			break;
 		case "DIMINISHED":
 			readyChord = new Chord(selectedNoteName, ChordType.valueOf(selectedChordType),
-					createNoteList(noteList, selectedNoteName, smallSecund, smallSecund));
+					createNoteList(noteList, selectedNoteName, smallInterval, smallInterval));
 			readyChord.getNotes().stream().forEach(n -> logger.info(n.getName() + " " + n.getPosition()));
 			break;
 		default:
-			Helper.createErrorAlert("Not proper use!", "The chord type is unrecognized!");
+			Helper.createAlert("Not proper use!", "The chord type is unrecognized!", AlertType.ERROR);
 			break;
 		}
 
@@ -259,7 +291,7 @@ public class BottomNoteButtonsViewController {
 	 * after the fxml file has been loaded.
 	 */
 	@FXML
-	private void initialize() {
+	private void initialize() {		
 		Notes.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 			public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
 				if (Notes.getSelectedToggle() != null) {

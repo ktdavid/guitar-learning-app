@@ -30,35 +30,87 @@ import javafx.scene.text.FontWeight;
  * Class for the controller of the GuitarNeckView.fxml.
  * 
  * @author Dávid Kistamás
+ * @version 1.0
  */
 public class GuitarNeckViewController {
 
 	/**
-	 * A logger object used for logging.
+	 * A logger object used for logging events at runtime.
 	 */
 	private Logger logger = LoggerFactory.getLogger(GuitarNeckViewController.class);
 
 	/**
-	 * The guitar's neck image view.
+	 * The guitar neck {@code ImageView} showing the picture of a guitar's neck.
 	 */
 	@FXML
 	private ImageView imageView;
 
+	/**
+	 * A {@code Chord} object for constructing a chord.
+	 */
 	private Chord chord;
 
+	/**
+	 * Returns the chord from the {@code GuitarNeckViewController} class.
+	 * 
+	 * @return the name of the {@code Chord} object
+	 */
+	public Chord getChord() {
+		return chord;
+	}
+	
+	/**
+	 * Sets the chord of the {@code GuitarNeckViewController} class.
+	 *
+	 * @param name the name to be set to the {@code Chord} object
+	 */
+	public void setChord(Chord chord) {
+		this.chord = chord;
+	}
+
+	/**
+	 * A {@code GridPane} containing the guitar neck image and 
+	 * the cells for the notes to be displayed in.
+	 */
 	private GridPane gridPane;
 
+	/**
+	 * Returns the {@code GridPane} from the {@code GuitarNeckViewController} class.
+	 * 
+	 * @return the {@code GridPane} of the {@code Chord} object
+	 */
+	public GridPane getGridPane() {
+		return gridPane;
+	}
+
+	/**
+	 * Sets the {@code GridPane} of the {@code GuitarNeckViewController} class.
+	 *
+	 * @param gridPane the {@code GridPane} to be set to the {@code GridPane} object
+	 */
+	public void setGridPane(GridPane gridPane) {
+		this.gridPane = gridPane;
+	}
+
+	/**
+	 * A list for containing the notes' names on the guitar neck.
+	 */
 	private List<List<String>> notesDisplay = new ArrayList<List<String>>();
 
+	/**
+	 * A list for containing the active positions (set to 1) of the notes.
+	 * If 1 display, else transparent.
+	 */
 	private List<List<Integer>> activePositions = new ArrayList<List<Integer>>();
 
 	/**
-	 * Reference to the main application.
+	 * A reference to the main application.
 	 */
 	private Main main;
 
 	/**
-	 * The constructor that is called before the initialize() method.
+	 * Initializes the notesDisplay and activePositions lists.
+	 * It is called before the initialize() method.
 	 */
 	public GuitarNeckViewController() {
 		notesDisplay.add(Arrays.asList("F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E"));
@@ -74,8 +126,8 @@ public class GuitarNeckViewController {
 	}
 
 	/**
-	 * Initializes the controller class. This method is automatically called
-	 * after the fxml file has been loaded.
+	 * Initializes the {@code GuitarNeckViewController} class. This method is automatically called
+	 * after the {@code FXML} file has been loaded.
 	 */
 	@FXML
 	private void initialize() {
@@ -84,7 +136,7 @@ public class GuitarNeckViewController {
 	}
 
 	/**
-	 * Is called by the main application to give a reference back to itself.
+	 * It is called by the main application to give a reference back to itself.
 	 * 
 	 * @param main the main application
 	 */
@@ -93,11 +145,11 @@ public class GuitarNeckViewController {
 	}
 
 	/**
-	 * ShowGuitarNeckView method.
+	 * Shows the notes on the guitar neck between the given frets.
 	 * 
-	 * @param chord the chord
-	 * @param lowerFretTreshold the lower fret's number
-	 * @param upperFretTreshold the upper fret's number
+	 * @param chord the chord to be displayed
+	 * @param lowerFretTreshold the lower fret number to show the notes from
+	 * @param upperFretTreshold the upper fret number to show the notes to
 	 */
 	public void showGuitarNeckView(Chord chord, int lowerFretTreshold, int upperFretTreshold) {
 		if (chord != null && (lowerFretTreshold != 0 || upperFretTreshold != 0)) {
@@ -108,7 +160,7 @@ public class GuitarNeckViewController {
 			logger.info("showGuitarNeckView method was called without a Chord!");
 		}
 	}
-
+	
 	private void showNotes(Chord chord, int lowerFretTreshold, int upperFretTreshold) {
 		gridPane = new GridPane();
 
@@ -156,6 +208,15 @@ public class GuitarNeckViewController {
 		});
 	}
 
+	/**
+	 * Returns true only if the number of the column is between the first 
+	 * and the second limit, else returns false.
+	 * 
+	 * @param counter the number of the column
+	 * @param first the lower treshold of frets
+	 * @param second the upper treshold of frets
+	 * @return true or false depending on whether the counter is between the limits or not
+	 */
 	private boolean isBetween(int counter, int first, int second) {
 		if (counter >= first - 1 && counter <= second - 1) {
 			return true;
@@ -185,41 +246,5 @@ public class GuitarNeckViewController {
 			gridPane.add(circle, i, j);
 			gridPane.add(lblChordName, i, j);
 		}
-	}
-
-	/**
-	 * public setter for Chord.
-	 * 
-	 * @param chord the chord
-	 */
-	public void setChord(Chord chord) {
-		this.chord = chord;
-	}
-
-	/**
-	 * public getter for Chord.
-	 * 
-	 * @return Chord
-	 */
-	public Chord getChord() {
-		return chord;
-	}
-
-	/**
-	 * public setter for the GridPane.
-	 * 
-	 * @param gridPane the GridPane
-	 */
-	public void setGridPane(GridPane gridPane) {
-		this.gridPane = gridPane;
-	}
-
-	/**
-	 * public getter for GridPane.
-	 * 
-	 * @return GridPane
-	 */
-	public GridPane getGridPane() {
-		return gridPane;
 	}
 }
