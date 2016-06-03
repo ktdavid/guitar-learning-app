@@ -8,7 +8,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import hu.unideb.inf.prt.guitarlearningapplication.Main;
 import hu.unideb.inf.prt.guitarlearningapplication.model.Chord;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -104,11 +103,6 @@ public class GuitarNeckViewController {
 	private List<List<Integer>> activePositions = new ArrayList<List<Integer>>();
 
 	/**
-	 * A reference to the main application.
-	 */
-	private Main main;
-
-	/**
 	 * Initializes the notesDisplay and activePositions lists.
 	 * It is called before the initialize() method.
 	 */
@@ -131,17 +125,8 @@ public class GuitarNeckViewController {
 	 */
 	@FXML
 	private void initialize() {
-		Image image = new Image(getClass().getResourceAsStream("/images/GuitarNeckUpgraded.png"));
+		Image image = new Image(getClass().getResourceAsStream("/images/GuitarNeckImage.png"));
 		imageView.setImage(image);
-	}
-
-	/**
-	 * It is called by the main application to give a reference back to itself.
-	 * 
-	 * @param main the main application
-	 */
-	public void setMainApp(Main main) {
-		this.main = main;
 	}
 
 	/**
@@ -155,7 +140,7 @@ public class GuitarNeckViewController {
 		if (chord != null && (lowerFretTreshold != 0 || upperFretTreshold != 0)) {
 			showNotes(chord, lowerFretTreshold, upperFretTreshold);
 		} else {
-			Image image = new Image(getClass().getResourceAsStream("/images/GuitarNeckUpgraded.png"));
+			Image image = new Image(getClass().getResourceAsStream("/images/GuitarNeckImage.png"));
 			imageView.setImage(image);
 			logger.info("showGuitarNeckView method was called without a Chord!");
 		}
@@ -186,7 +171,7 @@ public class GuitarNeckViewController {
 			}
 		}
 
-		gridPane.setStyle("-fx-background-image: url('/images/GuitarNeckUpgraded.png');");
+		gridPane.setStyle("-fx-background-image: url('/images/GuitarNeckImage.png');");
 	}
 
 	private void setDisplayPoints(Chord chord, int lowerFretTreshold, int upperFretTreshold) {

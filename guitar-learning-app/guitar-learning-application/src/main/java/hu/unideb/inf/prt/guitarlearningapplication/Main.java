@@ -1,18 +1,12 @@
 package hu.unideb.inf.prt.guitarlearningapplication;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import hu.unideb.inf.prt.guitarlearningapplication.controller.IOController;
 import hu.unideb.inf.prt.guitarlearningapplication.model.Chord;
 import hu.unideb.inf.prt.guitarlearningapplication.model.Chords;
 import hu.unideb.inf.prt.guitarlearningapplication.model.Note;
@@ -29,8 +23,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.Separator;
 import javafx.scene.control.SplitPane;
@@ -126,11 +118,6 @@ public class Main extends Application {
 	public void setDebugSwitch(boolean debugSwitchEnabled) {
 		this.debugSwitchEnabled = debugSwitchEnabled;
 	}
-	
-//	/**
-//	 * The object for the {@code IOController} class.
-//	 */
-//	private IOController IOController;
 
 	/**
 	 * Initializes baseNoteList with sample notes for the application.
@@ -192,19 +179,10 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		this.primaryStage = primaryStage;
-//		initializeControllers();
 		createRootView();
 		createGuitarNeckView(null, 0, 0);
 		createBottomNoteButtonsView(null, null);
 	}
-
-//	/**
-//	 * Initializes the {@code Controller} classes with main application.
-//	 */
-//	private void initializeControllers() {
-//		IOController = new IOController();
-//		IOController.setMainApp(this);
-//	}
 
 	/**
 	 * Creates the root view of the application.
@@ -261,7 +239,6 @@ public class Main extends Application {
 				rootView.setCenter(guitarNeckView);
 
 				GuitarNeckViewController controller = loader.getController();
-				controller.setMainApp(this);
 				controller.setChord(readyChord);
 				controller.setGridPane(gridPane);
 				controller.showGuitarNeckView(controller.getChord(), lowerFretTreshold, upperFretTreshold);
@@ -301,6 +278,7 @@ public class Main extends Application {
 			if(selectedChordType != null) {
 				controller.setSelectedChordType(selectedChordType);
 			}
+			
 			if(controller.getSelectedNoteName() != null && controller.getSelectedChordType() != null) {
 				controller.createMyChordButtonAction(new ActionEvent());
 				controller.postInitialize();

@@ -7,11 +7,14 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import hu.unideb.inf.prt.guitarlearningapplication.Main;
 import hu.unideb.inf.prt.guitarlearningapplication.helper.Helper;
+import hu.unideb.inf.prt.guitarlearningapplication.model.Chord;
 import hu.unideb.inf.prt.guitarlearningapplication.model.Chords;
 import javafx.collections.FXCollections;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 /**
@@ -21,6 +24,11 @@ import javafx.scene.control.Alert.AlertType;
  * @version 1.0
  */
 public class IOController {
+	
+	/**
+	 * A logger object used for logging events at runtime.
+	 */
+	private Logger logger = LoggerFactory.getLogger(IOController.class);
 	
 	/**
 	 * A reference to the main application.
@@ -85,6 +93,31 @@ public class IOController {
 			
 		} catch (JAXBException | IllegalArgumentException e) {
 			Helper.createAlert("Error", "Could not save data to file:\n" + file.getPath(), AlertType.ERROR);
+		}
+	}
+	
+	/**
+	 * Helper for appending the given {@code Chord} object to the XML file.
+	 * 
+	 * @param readyChord the {@code Chord} object to be saved
+	 */
+	public void saveChordAction(Chord readyChord) {
+		if (main.getWrapperChordList() != null && main.getWrapperChordList().getChords() != null
+				&& main.getWrapperChordList().getChords().stream().noneMatch(c -> c.getName().equals(readyChord.getName())
+						&& c.getChordType().equals(readyChord.getChordType()))) {
+			
+			main.getWrapperChordList().add(readyChord);
+			
+			saveChordToFile(new File("chords.xml"), main.getWrapperChordList());
+			
+			logger.info("File has been saved successfully!");
+		} else if (main.getWrapperChordList() == null || main.getWrapperChordList().getChords() == null) {
+			main.getWrapperChordList().add(readyChord);
+			saveChordToFile(new File("chords.xml"), main.getWrapperChordList());
+			logger.info("File has been saved successfully!");
+		} else {
+			Helper.createAlert("Chord is saved before.",
+					readyChord.getName() + " " + readyChord.getChordType() + " chord has been already saved before.", AlertType.ERROR);
 		}
 	}
 }

@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import hu.unideb.inf.prt.guitarlearningapplication.Main;
 import hu.unideb.inf.prt.guitarlearningapplication.controller.IOController;
 import hu.unideb.inf.prt.guitarlearningapplication.model.Chord;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -98,27 +97,20 @@ public class SavedChordsViewController {
 	 * @param main the main application
 	 */
 	public void setMainApp(Main main) {
+		
 		this.main = main;
 
 		chordTable.setItems(main.getChordsForTableView());
 		
-		initializeControllers();
+		initializeController();
 	}
 
 	/**
-	 * 
+	 * Initializes the {@code IOController} class for the {@code SavedChordsViewController} FXML controller.
 	 */
-	private void initializeControllers() {
-//		
-//		/**
-//		 * The load loading button's action.
-//		 * 
-//		 * @param event the actionevent
-//		 */
-//		@FXML
-//		public void loadChordsButtonAction(ActionEvent event) {
+	private void initializeController() {
+		
 		IOController.setMainApp(main);
 		IOController.loadChordsFromFile(new File("chords.xml"));
-		//}
 	}
 }

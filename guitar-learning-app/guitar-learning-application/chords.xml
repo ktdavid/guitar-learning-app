@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Chords>
     <Chord>
-        <Name>E</Name>
-        <Type>Minor</Type>
-    </Chord>
-    <Chord>
-        <Name>F</Name>
+        <Name>C</Name>
         <Type>Major</Type>
     </Chord>
     <Chord>
@@ -13,11 +9,15 @@
         <Type>Major</Type>
     </Chord>
     <Chord>
-        <Name>A</Name>
-        <Type>Augmented</Type>
+        <Name>E</Name>
+        <Type>Major</Type>
     </Chord>
     <Chord>
-        <Name>B</Name>
-        <Type>Diminished</Type>
+        <Name>F</Name>
+        <Type>Major</Type>
+    </Chord>
+    <Chord>
+        <Name>G</Name>
+        <Type>Augmented</Type>
     </Chord>
 </Chords>
