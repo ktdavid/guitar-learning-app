@@ -4,20 +4,4 @@
         <Name>C</Name>
         <Type>Major</Type>
     </Chord>
-    <Chord>
-        <Name>D</Name>
-        <Type>Major</Type>
-    </Chord>
-    <Chord>
-        <Name>E</Name>
-        <Type>Major</Type>
-    </Chord>
-    <Chord>
-        <Name>F</Name>
-        <Type>Major</Type>
-    </Chord>
-    <Chord>
-        <Name>G</Name>
-        <Type>Augmented</Type>
-    </Chord>
 </Chords>
